@@ -8,5 +8,15 @@
   </head>
   <body>
     @inertia
+
+    <!-- JS for mobile menu toggle -->
+    <script>
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const closeMenuBtn = document.getElementById('close-mobile-menu');
+
+    mobileMenuBtn?.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
+    closeMenuBtn?.addEventListener('click', () => mobileMenu.classList.add('hidden'));
+  </script>
   </body>
 </html>
