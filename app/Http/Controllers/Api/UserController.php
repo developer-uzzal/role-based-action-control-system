@@ -89,6 +89,20 @@ class UserController extends Controller
         }
     }
 
+    function show($id)
+    {
+        try {
+            $user = User::where('id', $id)->first();
+            return response()->json([
+                'status' => 'success',
+                'user' =>  $user,
+                'permissions' => $user->roles->pluck('permissions')->flatten()->pluck('name')->unique()
+            ]);
+        } catch (Exception $e) {
+            return response()->json(['message' => $e->getMessage()]);
+        }
+    }
+
     function update(Request $request, $id)
     {
 

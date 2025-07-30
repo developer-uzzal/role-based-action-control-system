@@ -12,10 +12,13 @@ class RoleController extends Controller
     function index()
     {
         $roles = Role::all();
+
+        $permissions = $roles->pluck('permissions')->flatten()->pluck('name')->unique();
         return response()->json(
             [
                 'status' => 'success',
-                'roles' => $roles
+                'roles' => $roles,
+                'permissions' => $permissions
             ]
         );
     }
@@ -59,12 +62,14 @@ class RoleController extends Controller
     {
         try {
             $role = Role::find($id);
+            $permissions = $role->permissions->pluck('name');
             
             if($role) {
                 return response()->json(
                     [
                         'status' => 'success',
-                        'role' => $role
+                        'role' => $role,
+                        'permissions' => $permissions
                     ]
                 );
             }else {
