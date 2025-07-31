@@ -38,6 +38,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     // role assign permission
     Route::middleware('api.permission:edit-user')->post('/role-permission-assign', [PermissionController::class, 'assignPermission']);
+    Route::middleware('check-permission:edit-user')->post('/role-user-assign', [PermissionController::class, 'assignUser']);
 
 
 

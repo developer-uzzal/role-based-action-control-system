@@ -3,20 +3,15 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Font Awesome CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/nprogress/0.2.0/nprogress.min.css" />
     @vite('resources/js/app.js')
     @inertiaHead
   </head>
   <body>
     @inertia
 
-    <!-- JS for mobile menu toggle -->
-    <script>
-    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const closeMenuBtn = document.getElementById('close-mobile-menu');
-
-    mobileMenuBtn?.addEventListener('click', () => mobileMenu.classList.remove('hidden'));
-    closeMenuBtn?.addEventListener('click', () => mobileMenu.classList.add('hidden'));
   </script>
   </body>
 </html>

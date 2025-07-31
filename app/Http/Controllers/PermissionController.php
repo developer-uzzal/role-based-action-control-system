@@ -1,17 +1,19 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use Exception;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Permission;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class PermissionController extends Controller
 {
     function assignPermission(Request $request)
     {
+
+
         try {
 
             $request->validate([
@@ -23,20 +25,24 @@ class PermissionController extends Controller
             $permissionsItems = $request->items;
 
             foreach ($permissionsItems as $item) {
+                
 
                 $role = Role::find($roleId);
-                $role->permissions()->attach($item);
+                $permissionId = Permission::where('name', $item)->first()->id;
+                $role->permissions()->attach($permissionId);
             }
 
 
-            return response()->json(['message' => 'Permission assigned successfully']);
+            return back()->with('success', ['status' => 'success', 'message' => 'Permissions assigned successfully']);
         } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()]);
+            return back()->with('error', ['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
 
-      function assignUserPermission(Request $request)
+    function assignUserPermission(Request $request)
     {
+
+
         try {
 
             $request->validate([
@@ -52,9 +58,11 @@ class PermissionController extends Controller
 
             $user->roles()->attach($role->id);
 
-            return response()->json(['message' => 'Permissions assigned successfully']);
+            return back()->with('success', ['status' => 'success', 'message' => 'Permissions assigned successfully']);
         } catch (Exception $e) {
-            return response()->json(['message' => $e->getMessage()]);
+            return back()->with('error', ['status' => 'error', 'message' => $e->getMessage()]);
         }
     }
+
+            
 }

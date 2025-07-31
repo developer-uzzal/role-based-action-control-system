@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,13 +17,16 @@ class CheckPermission
      */
     public function handle(Request $request, Closure $next, $permission): Response
     {
-        $user = Auth::user();
+
+        $userId = $request->session()->get('userId');
+        $user = User::find($userId);
+
 
         if (!$user) {
             
             abort(403, 'Unauthorized');
         }
-    dd(get_class($user)); 
+
 
         if (!$user->hasPermission($permission)) {
             

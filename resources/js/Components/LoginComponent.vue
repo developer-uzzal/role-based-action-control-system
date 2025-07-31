@@ -13,11 +13,11 @@
       <p class="text-center text-muted small mb-4">Login to your designated account from here</p>
 
       <!-- Login Form -->
-      <form>
+      <form @submit.prevent="submit">
         <!-- Email -->
         <div class="mb-3">
           <label for="email" class="form-label">E-mail</label>
-          <input type="email" class="form-control" id="email" placeholder="example@gmail.com" required>
+          <input type="email" class="form-control" id="email" placeholder="example@gmail.com" v-model="form.email">
         </div>
 
         <!-- Password -->
@@ -25,7 +25,7 @@
           <label for="password" class="form-label">Password</label>
           
           <div class="position-relative">
-            <input type="password" class="form-control" id="password" placeholder="Enter your password" required>
+            <input type="password" class="form-control" id="password" placeholder="Enter your password" v-model="form.password">
           <button type="button" class="btn btn-sm btn-outline-secondary position-absolute top-50 end-0 translate-middle-y me-2" @click="togglePassword()">
             👁️
           </button>
@@ -42,13 +42,77 @@
         </div>
 
         <!-- Submit Button -->
-        <button type="submit" class="btn btn-primary w-100">Sign in</button>
+        <button type="submit" class="btn btn-primary w-100" :disabled="form.processing">Sign in</button>
       </form>
     </div>
   </div>
 </template>
 
 <script setup>
+
+import { router, useForm, usePage } from '@inertiajs/vue3';
+import Notify from 'simple-notify';
+const page = usePage();
+const form = useForm({
+  email: "",
+  password: "",
+});
+
+const submit = () => {
+  
+    if(form.email==""){
+      
+        new Notify({
+            title: 'Error',
+            text: 'Email is required',
+            status: 'error'
+        })
+        return
+    }else if(form.password==""){
+        new Notify({
+            title: 'Error',
+            text: 'Password is required',
+            status: 'error'
+        })
+        return
+    }else{
+        form.post('/login', {
+            onSuccess: () => {
+
+                if (page.props.flash.success) {
+                    new Notify({
+                        status: 'success',
+                        title: page.props.flash.success.message,
+                        autotimeout: 2000,
+                    })
+
+                    form.reset();
+                    router.get("/dashboard");
+
+                } else if (page.props.flash.error) {
+                    new Notify({
+                        status: 'error',
+                        title: page.props.flash.error.message,
+                        autotimeout: 2000,
+                    })
+                }
+            },
+            onError: () => {
+                new Notify({
+                    title: 'Error',
+                    text: 'Login failed',
+                    status: 'error'
+                })
+            }
+        });
+    }
+
+};
+
+
+
+
+
 const togglePassword = () => {
       const passwordField = document.getElementById("password");
       passwordField.type = passwordField.type === "password" ? "text" : "password";

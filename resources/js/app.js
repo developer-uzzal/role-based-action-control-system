@@ -5,6 +5,9 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap";
 
 
+import Notify from 'simple-notify'
+import 'simple-notify/dist/simple-notify.css'
+
 createInertiaApp({
   resolve: name => {
     const pages = import.meta.glob('./Pages/**/*.vue', { eager: true })
